@@ -105,7 +105,38 @@ namespace Tests
             Assert.True(game.HasBet(player, 1));
             Assert.True(game.HasBet(player, 2));
         }
+
+        [Fact]
+        [Description("Я, как игрок, могу поставить только на числа 1 - 6")]
+        public void WhenPlaceBet1to6_ShouldBeAllowed()
+        {
+            var game = new Game();
+            var player = Create.Player
+                .WhoJoinGame(game)
+                .ThenBuyChips(5, from: new Casino())
+                .Build();
+            var bet = new Bet(5,1);
+
+            player.MakeBet(game,bet);
+
+            Assert.True(game.HasBet(player, 1));
+        }
+        [Fact]
+        [Description("Я, как игрок, не могу поставить на 0")]
+        public void WhenPlaceBetTo0_ShouldNotBeAllowed()
+        {
+            var game = new Game();
+            var player = Create.Player
+                .WhoJoinGame(game)
+                .ThenBuyChips(5, from: new Casino())
+                .Build();
+            var bet = new Bet(5,0);
+
+            Assert.Throws<InvalidOperationException>(()=> player.MakeBet(game,bet));
+        }
+
+
     }
 
-    
+
 }

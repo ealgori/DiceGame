@@ -23,7 +23,7 @@ namespace Tests
 
         }
         [Fact]
-        [Description("Я, как казино, принимаю только ставки, кратные 5")]
+        [Description("Я, как казино, не принимаю ставки, не кратные 5")]
         public void WhenCheckNot5xBet_ShouldNotBeAllow()
         {
             var casino = new Casino();
