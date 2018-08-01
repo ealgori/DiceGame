@@ -52,5 +52,6 @@ namespace Tests
 
             Assert.Throws<InvalidOperationException>(() => player.Join(new Game()));
         }
+      
     }
 }

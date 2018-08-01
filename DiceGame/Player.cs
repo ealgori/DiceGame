@@ -13,6 +13,7 @@ namespace DiceGame
                 throw new InvalidOperationException();
             }
 
+            game.AddPlayer(this);
             CurrentGame = game;
         }
 
