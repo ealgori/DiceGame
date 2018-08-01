@@ -8,5 +8,10 @@ namespace DiceGame
         {
             CurrentGame = game;
         }
+
+        public void Leave(Game game)
+        {
+            CurrentGame = null;
+        }
     }
 }
