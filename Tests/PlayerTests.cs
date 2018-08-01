@@ -31,6 +31,7 @@ namespace Tests
 
             Assert.Null(player.CurrentGame);
         }
+
         [Fact]
         [Description("Я, как игрок, не могу выйти из игры, если я в нее не входил")]
         public void WhenNotInGame_ShouldNotLeave()
@@ -39,6 +40,17 @@ namespace Tests
             var player = new Player();
 
             Assert.Throws<InvalidOperationException>(()=>player.Leave(game));
+        }
+
+        [Fact]
+        [Description("Я, как игрок, могу играть только в одну игру одновременно")]
+        public void WhenInGame_ShouldNotJoinAnotherGame()
+        {
+            var game = new Game();
+            var player = new Player();
+            player.Join(game);
+
+            Assert.Throws<InvalidOperationException>(() => player.Join(new Game()));
         }
     }
 }
