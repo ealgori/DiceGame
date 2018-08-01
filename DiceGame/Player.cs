@@ -1,3 +1,5 @@
+using System;
+
 namespace DiceGame
 {
     public class Player
@@ -11,6 +13,9 @@ namespace DiceGame
 
         public void Leave(Game game)
         {
+            if(CurrentGame==null)
+                throw new InvalidOperationException();
+
             CurrentGame = null;
         }
     }
