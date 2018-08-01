@@ -4,7 +4,8 @@ namespace DiceGame
 {
     public class Player
     {
-        public Game CurrentGame { get; set; }
+        public Game CurrentGame { get; private set; }
+        public int AvailableChips { get; private set; }
 
         public void Join(Game game)
         {
@@ -23,6 +24,11 @@ namespace DiceGame
                 throw new InvalidOperationException();
 
             CurrentGame = null;
+        }
+
+        public void Buy(Casino casino, int chipsAmount)
+        {
+            AvailableChips += chipsAmount;
         }
     }
 }

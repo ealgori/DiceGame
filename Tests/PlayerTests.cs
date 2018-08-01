@@ -52,6 +52,18 @@ namespace Tests
 
             Assert.Throws<InvalidOperationException>(() => player.Join(new Game()));
         }
+
+        [Fact]
+        [Description("Я, как игрок, могу купить фишки у казино, чтобы делать ставки")]
+        public void WhenBuyChips_ShouldAddThemToAvailableChips()
+        {
+            var player = new Player();
+            var casino = new Casino();
+
+            player.Buy(casino, 6);
+
+            Assert.Equal(6, player.AvailableChips);
+        }
       
     }
 }
