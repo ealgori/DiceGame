@@ -99,8 +99,8 @@ namespace Tests
                 .ThenBuyChips(2, from: new Casino())
                 .Build();
 
-            player.MakeBet(game, new Bet(1, 1, player));
-            player.MakeBet(game, new Bet(1, 2, player));
+            player.MakeBet(game, new Bet(1, 1));
+            player.MakeBet(game, new Bet(1, 2));
 
             Assert.True(game.HasBet(player, 1));
             Assert.True(game.HasBet(player, 2));
