@@ -33,6 +33,9 @@ namespace DiceGame
 
         public void MakeBet(Game game, int bet)
         {
+            if(AvailableChips<bet)
+                throw new InvalidOperationException();
+
             game.PlaceBet(this, bet);
         }
     }

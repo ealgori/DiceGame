@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using DiceGame;
+using Tests.DSL;
 using Xunit;
 
 namespace Tests
@@ -71,10 +72,21 @@ namespace Tests
         {
             var player = new Player();
             var game = new Game();
+            var casino = new Casino();
+            player.Buy(casino,3);
 
             player.MakeBet(game, 3);
 
             Assert.Equal(3, game.BetOf(player));
+        }
+        [Fact]
+        [Description("Я, как игрок, не могу поставить фишек больше, чем я купил")]
+        public void WhenMakeBetWithNoChips_ShouldNotSuccess()
+        {
+            var player = Create.Player.Build();
+            var game = new Game();
+
+            Assert.Throws<InvalidOperationException>(()=> player.MakeBet(game, 3));
         }
     }
 }

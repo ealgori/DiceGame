@@ -19,7 +19,10 @@ namespace DiceGame
 
         public int BetOf(Player player)
         {
-            return bets[player];
+            if(bets.ContainsKey(player))
+                return bets[player];
+
+            return 0;
         }
 
         public void PlaceBet(Player player, int bet)
