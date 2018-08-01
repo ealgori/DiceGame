@@ -30,5 +30,10 @@ namespace DiceGame
         {
             AvailableChips += chipsAmount;
         }
+
+        public void MakeBet(Game game, int bet)
+        {
+            game.PlaceBet(this, bet);
+        }
     }
 }

@@ -64,6 +64,17 @@ namespace Tests
 
             Assert.Equal(6, player.AvailableChips);
         }
-      
+
+        [Fact]
+        [Description("Я, как игрок, могу сделать ставку в игре в кости, чтобы выиграть")]
+        public void WhenMakeBet_ShouldSuccessfullyMakeBet()
+        {
+            var player = new Player();
+            var game = new Game();
+
+            player.MakeBet(game, 3);
+
+            Assert.Equal(3, game.BetOf(player));
+        }
     }
 }
