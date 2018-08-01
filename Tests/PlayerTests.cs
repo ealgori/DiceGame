@@ -75,9 +75,9 @@ namespace Tests
             var casino = new Casino();
             player.Buy(casino,3);
 
-            player.MakeBet(game, 3);
+            player.MakeBet(game, new Bet(3, 1));
 
-            Assert.Equal(3, game.BetOf(player));
+            Assert.Equal(3, game.BetOf(player).Amount);
         }
         [Fact]
         [Description("Я, как игрок, не могу поставить фишек больше, чем я купил")]
@@ -86,7 +86,26 @@ namespace Tests
             var player = Create.Player.Build();
             var game = new Game();
 
-            Assert.Throws<InvalidOperationException>(()=> player.MakeBet(game, 3));
+            Assert.Throws<InvalidOperationException>(()=> player.MakeBet(game, new Bet(3, 1)));
+        }
+
+        [Fact]
+        [Description("Я, как игрок, могу сделать несколько ставок на разные числа, чтобы повысить вероятность выигрыша")]
+        public void WhenMakeBetToDifferentNumbers_ShouldSuccessfullyMakeBets()
+        {
+            var game = new Game();
+            var player = Create.Player
+                .WhoJoinGame(game)
+                .ThenBuyChips(2, from: new Casino())
+                .Build();
+
+            player.MakeBet(game, new Bet(1, 1, player));
+            player.MakeBet(game, new Bet(1, 2, player));
+
+            Assert.True(game.HasBet(player, 1));
+            Assert.True(game.HasBet(player, 2));
         }
     }
+
+    
 }

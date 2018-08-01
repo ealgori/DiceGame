@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DiceGame
 {
     public class Game
     {
         private readonly int maxPlayers = 6;
-        private readonly Dictionary<Player, int> bets = new Dictionary<Player, int>();
+        private readonly List<Bet> bets = new List<Bet>();
 
         public List<Player> Players { get; private set; } = new List<Player>();
         public void AddPlayer(Player player)
@@ -17,17 +18,19 @@ namespace DiceGame
             Players.Add(player);
         }
 
-        public int BetOf(Player player)
+        public Bet BetOf(Player player)
         {
-            if(bets.ContainsKey(player))
-                return bets[player];
-
-            return 0;
+            return bets.FirstOrDefault(bet => bet.Player == player);
         }
 
-        public void PlaceBet(Player player, int bet)
+        public void PlaceBet(Player player, Bet bet)
         {
-            bets.Add(player, bet);
+            bets.Add(bet);
+        }
+
+        public bool HasBet(Player player, int number)
+        {
+            return bets.Any(bet => bet.Player == player && bet.Number == number);
         }
     }
 }

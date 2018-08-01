@@ -31,12 +31,12 @@ namespace DiceGame
             AvailableChips += chipsAmount;
         }
 
-        public void MakeBet(Game game, int bet)
+        public void MakeBet(Game game, Bet bet)
         {
-            if(AvailableChips<bet)
+            if(AvailableChips < bet.Amount)
                 throw new InvalidOperationException();
 
-            game.PlaceBet(this, bet);
+            game.PlaceBet(this, new Bet(bet.Amount, bet.Number, this));
         }
     }
 }
