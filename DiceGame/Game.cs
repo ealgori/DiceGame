@@ -8,6 +8,8 @@ namespace DiceGame
     {
         private readonly int maxPlayers = 6;
 
+        public int DiceCount { get; set; } = 1;
+
         private readonly List<Bet> bets = new List<Bet>();
 
         public List<Player> Players { get; private set; } = new List<Player>();
