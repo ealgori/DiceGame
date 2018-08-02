@@ -181,7 +181,54 @@ namespace Tests
             Assert.True(player.AvailableChips-startAvailableChips==6*10);
         }
 
-        
+        [Fact]
+        [Description("Я, как игрок, могу делать ставки на числа от 2 до 12")]
+        public void WhenPlaceBet2to12InTwoDiceGame_ShouldBeAllowed()
+        {
+            var game = new Game();
+            var stickman = new Stickman();
+            stickman.AddDice(game);
+            var player = Create.Player
+                .WhoJoinGame(game)
+                .ThenBuyChips(10, from: new Casino())
+                .Build();
+
+            player.MakeBet(game, new Bet(5, 2));
+
+            Assert.True(game.HasBet(player, 2));
+        }
+
+        [Fact]
+        [Description("Я, как игрок, не могу поставить на 1 в игре с двумя кубиками")]
+        public void WhenPlaceBetTo1InTwoDicesGame_ShouldNotBeAllowed()
+        {
+            var game = new Game();
+            var stickman = new Stickman();
+            stickman.AddDice(game);
+            var player = Create.Player
+                .WhoJoinGame(game)
+                .ThenBuyChips(5, from: new Casino())
+                .Build();
+            var bet = new Bet(5, 1);
+
+            Assert.Throws<InvalidOperationException>(() => player.MakeBet(game, bet));
+        }
+
+        [Fact]
+        [Description("Я, как игрок, не могу поставить на 13 в игре с двумя кубиками")]
+        public void WhenPlaceBetTo13InTwoDicesGame_ShouldNotBeAllowed()
+        {
+            var game = new Game();
+            var stickman = new Stickman();
+            stickman.AddDice(game);
+            var player = Create.Player
+                .WhoJoinGame(game)
+                .ThenBuyChips(5, from: new Casino())
+                .Build();
+            var bet = new Bet(5, 13);
+
+            Assert.Throws<InvalidOperationException>(() => player.MakeBet(game, bet));
+        }
 
 
     }

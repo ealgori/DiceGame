@@ -39,7 +39,10 @@ namespace DiceGame
             if(AvailableChips < bet.Amount)
                 throw new InvalidOperationException();
 
-            if (bet.Number < 1 || bet.Number > 6)
+            if (game.DiceCount == 1 && bet.Number < 1 || bet.Number > 6)
+                throw new InvalidOperationException();
+
+            if (game.DiceCount == 2 && bet.Number < 2 || bet.Number > 12)
                 throw new InvalidOperationException();
 
             game.PlaceBet(this, new Bet(bet.Amount, bet.Number, this));

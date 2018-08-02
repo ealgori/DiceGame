@@ -13,8 +13,7 @@ namespace Tests
         [Description("Я, как крупье, могу сделать игру с двумя кубиками")]
         public void WhenMake2DicesGame_ShouldSucced()
         {
-            var casino = new Casino();
-            var game = casino.CreateGame(luckyNumber: 3);
+            var game = new Game();
             var stickman = new Stickman();
 
             stickman.AddDice(game);
