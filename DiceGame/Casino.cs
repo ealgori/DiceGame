@@ -11,5 +11,15 @@ namespace DiceGame
         {
             return bet.Where(b => b.Amount % 5 == 0);
         }
+
+        public Game CreateGame(int luckyNumber)
+        {
+            var game = new Game();
+            game.LuckyNumber = luckyNumber;
+            game.Casino = this;
+            return game;
+        }
+
+        public int AvailableChips { get; set; }
     }
 }

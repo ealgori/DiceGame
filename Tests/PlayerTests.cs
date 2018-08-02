@@ -140,15 +140,16 @@ namespace Tests
         [Description("Я, как игрок, могу проиграть, если сделал неправильную ставку")]
         public void WhenMakeWrongBet_ShouldNotWin()
         {
-            var game = new Game();
-            game.LuckyNumber = 3;
-            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, new Casino()).Build();
+            var casino = new Casino();
+            var game = casino.CreateGame(luckyNumber:3);
+            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, casino).Build();
             player.MakeBet(game, new Bet(5, 1));
             
             game.Play();
 
             Assert.False(player.Winner);
         }
+
         [Fact]
         [Description("Я, как игрок, могу выиграть 6 ставок, если сделал правильную ставку")]
         public void WhenMakeRightBet_ShouldWin6xBets()
@@ -163,6 +164,8 @@ namespace Tests
 
             Assert.True(player.AvailableChips-startAvailableChips==6*5);
         }
+
+        
 
 
     }

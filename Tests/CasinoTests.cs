@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using DiceGame;
+using Tests.DSL;
 using Xunit;
 
 namespace Tests
@@ -33,6 +34,21 @@ namespace Tests
 
             Assert.Empty(allowedBets);
 
+        }
+
+        [Fact]
+        [Description("Я, как казино, получаю фишки, которые проиграл игрок")]
+        public void WhenPlayerLose_GetHisBet()
+        {
+            var casino = new Casino();
+            var game = casino.CreateGame(luckyNumber: 3);
+            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, new Casino()).Build();
+            var startChips = casino.AvailableChips;
+            player.MakeBet(game, new Bet(5, 1));
+
+            game.Play();
+
+            Assert.True(casino.AvailableChips - startChips == 5);
         }
 
 

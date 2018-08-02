@@ -14,6 +14,8 @@ namespace DiceGame
 
         public int LuckyNumber { get; set; }
 
+        public Casino Casino { get; set; }
+
         public void AddPlayer(Player player)
         {
             if(Players.Count>=maxPlayers)
@@ -45,8 +47,10 @@ namespace DiceGame
                 {
                     bet.Player.Win(bet);
                 }
-               
-
+                else
+                {
+                    Casino.AvailableChips += bet.Amount;
+                }
             }
         }
     }
