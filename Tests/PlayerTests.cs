@@ -165,6 +165,22 @@ namespace Tests
             Assert.True(player.AvailableChips-startAvailableChips==6*5);
         }
 
+        [Fact]
+        [Description("Я, как игрок, могу сделать несколько ставок на разные числа и получить выигрыш по тем, которые выиграли")]
+        public void WhenMakeSeveralBets_ShouldGet6xForWinnerBets()
+        {
+            var casino = new Casino();
+            var game = casino.CreateGame(luckyNumber:3);
+            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(15, casino).Build();
+            var startAvailableChips = player.AvailableChips;
+            player.MakeBet(game, new Bet(10, game.LuckyNumber));
+            player.MakeBet(game, new Bet(5, 2));
+
+            game.Play();
+
+            Assert.True(player.AvailableChips-startAvailableChips==6*10);
+        }
+
         
 
 
