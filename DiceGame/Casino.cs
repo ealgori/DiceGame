@@ -35,6 +35,11 @@ namespace DiceGame
             return game;
         }
 
+        internal int BuyChips(int chipsAmount)
+        {
+            return chipsAmount;
+        }
+
         public int AvailableChips { get; set; }
 
         public int GetCoefficient(Game game)

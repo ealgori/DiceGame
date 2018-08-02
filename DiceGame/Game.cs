@@ -31,8 +31,21 @@ namespace DiceGame
             return bets.FirstOrDefault(bet => bet.Player == player);
         }
 
-        public void PlaceBet(Player player, Bet bet)
+        public void PlaceBet(Bet bet)
         {
+            if (bet.Player.AvailableChips < bet.Amount)
+                throw new InvalidOperationException();
+
+            if (!Casino.AcceptBets(bet).Any())
+                throw new InvalidOperationException();
+
+            if (DiceCount == 1 && (bet.Number < 1 || bet.Number > 6))
+                throw new InvalidOperationException();
+
+            if (DiceCount == 2 && (bet.Number < 2 || bet.Number > 12))
+                throw new InvalidOperationException();
+
+            
             bets.Add(bet);
         }
 

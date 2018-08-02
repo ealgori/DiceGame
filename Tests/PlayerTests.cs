@@ -70,13 +70,12 @@ namespace Tests
         [Description("Я, как игрок, могу сделать ставку в игре в кости, чтобы выиграть")]
         public void WhenMakeBet_ShouldSuccessfullyMakeBet()
         {
-            var player = new Player();
-            var game = Create.Game.WithCasino().Build();
-            player.Buy(game.Casino,3);
+            var player = Create.Player.WithAvailableChips(5).Build();
+            var game = Create.Game.Build();
 
-            player.MakeBet(game, new Bet(3, 1));
+            player.MakeBet(game, new Bet(5, 1));
 
-            Assert.Equal(3, game.BetOf(player).Amount);
+            Assert.Equal(5, game.BetOf(player).Amount);
         }
         [Fact]
         [Description("Я, как игрок, не могу поставить фишек больше, чем я купил")]
@@ -85,21 +84,21 @@ namespace Tests
             var player = Create.Player.Build();
             var game = new Game();
 
-            Assert.Throws<InvalidOperationException>(()=> player.MakeBet(game, new Bet(3, 1)));
+            Assert.Throws<InvalidOperationException>(()=> player.MakeBet(game, new Bet(5, 1)));
         }
 
         [Fact]
         [Description("Я, как игрок, могу сделать несколько ставок на разные числа, чтобы повысить вероятность выигрыша")]
         public void WhenMakeBetToDifferentNumbers_ShouldSuccessfullyMakeBets()
         {
-            var game = new Game();
+            var game = Create.Game.Build();
             var player = Create.Player
                 .WhoJoinGame(game)
-                .ThenBuyChips(2, from: new Casino())
+                .WithAvailableChips(15)
                 .Build();
 
-            player.MakeBet(game, new Bet(1, 1));
-            player.MakeBet(game, new Bet(1, 2));
+            player.MakeBet(game, new Bet(5, 1));
+            player.MakeBet(game, new Bet(10, 2));
 
             Assert.True(game.HasBet(player, 1));
             Assert.True(game.HasBet(player, 2));
@@ -109,10 +108,10 @@ namespace Tests
         [Description("Я, как игрок, могу поставить только на числа 1 - 6")]
         public void WhenPlaceBet1to6_ShouldBeAllowed()
         {
-            var game = new Game();
+            var game =Create.Game.Build();
             var player = Create.Player
                 .WhoJoinGame(game)
-                .ThenBuyChips(5, from: new Casino())
+                .WithAvailableChips(5)
                 .Build();
             var bet = new Bet(5,1);
 
@@ -125,10 +124,10 @@ namespace Tests
         [Description("Я, как игрок, не могу поставить на 0")]
         public void WhenPlaceBetTo0_ShouldNotBeAllowed()
         {
-            var game = new Game();
+            var game = Create.Game.Build();
             var player = Create.Player
                 .WhoJoinGame(game)
-                .ThenBuyChips(5, from: new Casino())
+                .WithAvailableChips(5)
                 .Build();
             var bet = new Bet(5,0);
 
@@ -139,24 +138,24 @@ namespace Tests
         [Description("Я, как игрок, могу проиграть, если сделал неправильную ставку")]
         public void WhenMakeWrongBet_ShouldNotWin()
         {
-            var game = Create.Game.WithCasino().WithLuckyNumber(3).Build();
-            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, game.Casino).Build();
+            var game = Create.Game.WithLuckyNumber(3).Build();
+            var player = Create.Player.WhoJoinGame(game).WithAvailableChips(5).Build();
             player.MakeBet(game, new Bet(5, 1));
-            
+            var startAmmount = player.AvailableChips;
             game.Play();
 
-            Assert.False(player.Winner);
+            Assert.Equal(startAmmount, player.AvailableChips);
         }
 
         [Fact]
         [Description("Я, как игрок, могу выиграть 6 ставок, если сделал правильную ставку")]
         public void WhenMakeRightBet_ShouldWin6xBets()
         {
-            var game = Create.Game.WithCasino().WithLuckyNumber(3).Build();
-            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, game.Casino).Build();
-            var startAvailableChips = player.AvailableChips;
+            var game = Create.Game.WithLuckyNumber(3).Build();
+            var player = Create.Player.WhoJoinGame(game).WithAvailableChips(5).Build();
             player.MakeBet(game, new Bet(5, game.LuckyNumber));
-            
+            var startAvailableChips = player.AvailableChips;
+
             game.Play();
 
             Assert.True(player.AvailableChips-startAvailableChips==6*5);
@@ -166,11 +165,11 @@ namespace Tests
         [Description("Я, как игрок, могу сделать несколько ставок на разные числа и получить выигрыш по тем, которые выиграли")]
         public void WhenMakeSeveralBets_ShouldGet6xForWinnerBets()
         {
-            var game = Create.Game.WithCasino().WithLuckyNumber(3).Build();
-            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(15, game.Casino).Build();
-            var startAvailableChips = player.AvailableChips;
+            var game = Create.Game.WithLuckyNumber(3).Build();
+            var player = Create.Player.WhoJoinGame(game).WithAvailableChips(15).Build();
             player.MakeBet(game, new Bet(10, game.LuckyNumber));
             player.MakeBet(game, new Bet(5, 2));
+            var startAvailableChips = player.AvailableChips;
 
             game.Play();
 
@@ -184,7 +183,7 @@ namespace Tests
             var game = Create.Game.WithTwoDices().Build();
             var player = Create.Player
                 .WhoJoinGame(game)
-                .ThenBuyChips(10, from: new Casino())
+                .WithAvailableChips(10)
                 .Build();
 
             player.MakeBet(game, new Bet(5, 2));
@@ -199,7 +198,7 @@ namespace Tests
             var game = Create.Game.WithTwoDices().Build();
             var player = Create.Player
                 .WhoJoinGame(game)
-                .ThenBuyChips(5, from: new Casino())
+                .WithAvailableChips(5)
                 .Build();
             var bet = new Bet(5, 1);
 
@@ -213,7 +212,7 @@ namespace Tests
             var game = Create.Game.WithTwoDices().Build();
             var player = Create.Player
                 .WhoJoinGame(game)
-                .ThenBuyChips(5, from: new Casino())
+                .WithAvailableChips(5)
                 .Build();
             var bet = new Bet(5, 13);
 

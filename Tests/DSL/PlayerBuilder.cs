@@ -13,17 +13,25 @@ namespace Tests.DSL
 
         public Player Build()
         {
-            var player = new Player();
+            Player player;
+
+            if (casino != null && chips != 0)
+            {
+                player = new Player();
+                player.Buy(casino, chips);
+            }
+            else
+            {
+                player = new Player(chips);
+            }
 
             if (game != null)
             {
                 player.Join(game);
             }
 
-            if (casino != null && chips != 0)
-            {
-                player.Buy(casino, chips);
-            }
+
+           
 
             return player;
         }
@@ -34,10 +42,9 @@ namespace Tests.DSL
             return this;
         }
 
-        public PlayerBuilder ThenBuyChips(int chipsToBuy, Casino from)
+        public PlayerBuilder WithAvailableChips(int chipsAmount)
         {
-            chips = chipsToBuy;
-            casino = from;
+            chips = chipsAmount;
             return this;
         }
     }

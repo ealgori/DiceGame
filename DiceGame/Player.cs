@@ -4,11 +4,17 @@ namespace DiceGame
 {
     public class Player
     {
+        public Player()
+        {
+
+        }
+        public Player(int availableChips)
+        {
+            AvailableChips = availableChips;
+        }
         public Game CurrentGame { get; private set; }
 
         public int AvailableChips { get; private set; }
-
-        public bool Winner { get; private set; }
 
         public void Join(Game game)
         {
@@ -31,26 +37,18 @@ namespace DiceGame
 
         public void Buy(Casino casino, int chipsAmount)
         {
-            AvailableChips += chipsAmount;
+            var chips = casino.BuyChips(chipsAmount);
+            AvailableChips += chips;
         }
 
         public void MakeBet(Game game, Bet bet)
         {
-            if(AvailableChips < bet.Amount)
-                throw new InvalidOperationException();
-
-            if (game.DiceCount == 1 && (bet.Number < 1 || bet.Number > 6))
-                throw new InvalidOperationException();
-
-            if (game.DiceCount == 2 && (bet.Number < 2 || bet.Number > 12))
-                throw new InvalidOperationException();
-
-            game.PlaceBet(this, new Bet(bet.Amount, bet.Number, this));
+            game.PlaceBet(new Bet(bet.Amount, bet.Number, this));
+            AvailableChips -= bet.Amount;
         }
 
         public void Win(int chips)
         {
-            this.Winner = true;
             AvailableChips += chips;
         }
     }
