@@ -41,7 +41,12 @@ namespace DiceGame
         {
             foreach (var bet in bets)
             {
-                bet.Player.Winner = bet.Number == LuckyNumber;
+                if(bet.Number==LuckyNumber)
+                {
+                    bet.Player.Win(bet);
+                }
+               
+
             }
         }
     }

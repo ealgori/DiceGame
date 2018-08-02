@@ -8,7 +8,7 @@ namespace DiceGame
 
         public int AvailableChips { get; private set; }
 
-        public bool Winner { get; set; }
+        public bool Winner { get; private set; }
 
         public void Join(Game game)
         {
@@ -43,6 +43,12 @@ namespace DiceGame
                 throw new InvalidOperationException();
 
             game.PlaceBet(this, new Bet(bet.Amount, bet.Number, this));
+        }
+
+        public void Win(Bet bet)
+        {
+            this.Winner = true;
+            AvailableChips += bet.Amount * 6;
         }
     }
 }

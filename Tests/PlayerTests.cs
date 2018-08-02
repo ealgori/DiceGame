@@ -149,6 +149,20 @@ namespace Tests
 
             Assert.False(player.Winner);
         }
+        [Fact]
+        [Description("Я, как игрок, могу выиграть 6 ставок, если сделал правильную ставку")]
+        public void WhenMakeRightBet_ShouldWin6xBets()
+        {
+            var game = new Game();
+            game.LuckyNumber = 3;
+            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, new Casino()).Build();
+            var startAvailableChips = player.AvailableChips;
+            player.MakeBet(game, new Bet(5, game.LuckyNumber));
+            
+            game.Play();
+
+            Assert.True(player.AvailableChips-startAvailableChips==6*5);
+        }
 
 
     }
