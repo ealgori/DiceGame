@@ -7,9 +7,13 @@ namespace DiceGame
     public class Game
     {
         private readonly int maxPlayers = 6;
+
         private readonly List<Bet> bets = new List<Bet>();
 
         public List<Player> Players { get; private set; } = new List<Player>();
+
+        public int LuckyNumber { get; set; }
+
         public void AddPlayer(Player player)
         {
             if(Players.Count>=maxPlayers)
@@ -31,6 +35,14 @@ namespace DiceGame
         public bool HasBet(Player player, int number)
         {
             return bets.Any(bet => bet.Player == player && bet.Number == number);
+        }
+
+        public void Play()
+        {
+            foreach (var bet in bets)
+            {
+                bet.Player.Winner = bet.Number == LuckyNumber;
+            }
         }
     }
 }

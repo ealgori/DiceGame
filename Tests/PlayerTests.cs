@@ -121,6 +121,7 @@ namespace Tests
 
             Assert.True(game.HasBet(player, 1));
         }
+
         [Fact]
         [Description("Я, как игрок, не могу поставить на 0")]
         public void WhenPlaceBetTo0_ShouldNotBeAllowed()
@@ -133,6 +134,20 @@ namespace Tests
             var bet = new Bet(5,0);
 
             Assert.Throws<InvalidOperationException>(()=> player.MakeBet(game,bet));
+        }
+
+        [Fact]
+        [Description("Я, как игрок, могу проиграть, если сделал неправильную ставку")]
+        public void WhenMakeWrongBet_ShouldNotWin()
+        {
+            var game = new Game();
+            game.LuckyNumber = 3;
+            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, new Casino()).Build();
+            player.MakeBet(game, new Bet(5, 1));
+            
+            game.Play();
+
+            Assert.False(player.Winner);
         }
 
 

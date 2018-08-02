@@ -5,7 +5,10 @@ namespace DiceGame
     public class Player
     {
         public Game CurrentGame { get; private set; }
+
         public int AvailableChips { get; private set; }
+
+        public bool Winner { get; set; }
 
         public void Join(Game game)
         {
