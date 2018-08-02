@@ -47,7 +47,7 @@ namespace DiceGame
             {
                 if(bet.Number==LuckyNumber)
                 {
-                    bet.Player.Win(bet);
+                    bet.Player.Win(bet.Amount * Casino.GetCoefficient(this));
                 }
                 else
                 {

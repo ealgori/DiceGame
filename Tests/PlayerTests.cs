@@ -71,9 +71,8 @@ namespace Tests
         public void WhenMakeBet_ShouldSuccessfullyMakeBet()
         {
             var player = new Player();
-            var game = new Game();
-            var casino = new Casino();
-            player.Buy(casino,3);
+            var game = Create.Game.WithCasino().Build();
+            player.Buy(game.Casino,3);
 
             player.MakeBet(game, new Bet(3, 1));
 
@@ -140,9 +139,8 @@ namespace Tests
         [Description("Я, как игрок, могу проиграть, если сделал неправильную ставку")]
         public void WhenMakeWrongBet_ShouldNotWin()
         {
-            var casino = new Casino();
-            var game = casino.CreateGame(luckyNumber:3);
-            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, casino).Build();
+            var game = Create.Game.WithCasino().WithLuckyNumber(3).Build();
+            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, game.Casino).Build();
             player.MakeBet(game, new Bet(5, 1));
             
             game.Play();
@@ -154,9 +152,8 @@ namespace Tests
         [Description("Я, как игрок, могу выиграть 6 ставок, если сделал правильную ставку")]
         public void WhenMakeRightBet_ShouldWin6xBets()
         {
-            var game = new Game();
-            game.LuckyNumber = 3;
-            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, new Casino()).Build();
+            var game = Create.Game.WithCasino().WithLuckyNumber(3).Build();
+            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(5, game.Casino).Build();
             var startAvailableChips = player.AvailableChips;
             player.MakeBet(game, new Bet(5, game.LuckyNumber));
             
@@ -169,9 +166,8 @@ namespace Tests
         [Description("Я, как игрок, могу сделать несколько ставок на разные числа и получить выигрыш по тем, которые выиграли")]
         public void WhenMakeSeveralBets_ShouldGet6xForWinnerBets()
         {
-            var casino = new Casino();
-            var game = casino.CreateGame(luckyNumber:3);
-            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(15, casino).Build();
+            var game = Create.Game.WithCasino().WithLuckyNumber(3).Build();
+            var player = Create.Player.WhoJoinGame(game).ThenBuyChips(15, game.Casino).Build();
             var startAvailableChips = player.AvailableChips;
             player.MakeBet(game, new Bet(10, game.LuckyNumber));
             player.MakeBet(game, new Bet(5, 2));
@@ -185,9 +181,7 @@ namespace Tests
         [Description("Я, как игрок, могу делать ставки на числа от 2 до 12")]
         public void WhenPlaceBet2to12InTwoDiceGame_ShouldBeAllowed()
         {
-            var game = new Game();
-            var stickman = new Stickman();
-            stickman.AddDice(game);
+            var game = Create.Game.WithTwoDices().Build();
             var player = Create.Player
                 .WhoJoinGame(game)
                 .ThenBuyChips(10, from: new Casino())
@@ -202,9 +196,7 @@ namespace Tests
         [Description("Я, как игрок, не могу поставить на 1 в игре с двумя кубиками")]
         public void WhenPlaceBetTo1InTwoDicesGame_ShouldNotBeAllowed()
         {
-            var game = new Game();
-            var stickman = new Stickman();
-            stickman.AddDice(game);
+            var game = Create.Game.WithTwoDices().Build();
             var player = Create.Player
                 .WhoJoinGame(game)
                 .ThenBuyChips(5, from: new Casino())
@@ -218,9 +210,7 @@ namespace Tests
         [Description("Я, как игрок, не могу поставить на 13 в игре с двумя кубиками")]
         public void WhenPlaceBetTo13InTwoDicesGame_ShouldNotBeAllowed()
         {
-            var game = new Game();
-            var stickman = new Stickman();
-            stickman.AddDice(game);
+            var game = Create.Game.WithTwoDices().Build();
             var player = Create.Player
                 .WhoJoinGame(game)
                 .ThenBuyChips(5, from: new Casino())

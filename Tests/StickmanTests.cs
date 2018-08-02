@@ -19,7 +19,6 @@ namespace Tests
             stickman.AddDice(game);
 
             Assert.Equal(2, game.DiceCount);
-
         }
     }
 }
